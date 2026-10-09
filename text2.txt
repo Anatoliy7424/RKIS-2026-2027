@@ -7,6 +7,6 @@ class Program
         Console.Write("Введите ваше имя: ");
         string name = Console.ReadLine();
         
-        Console.WriteLine($"Привет, {name}! Удачи в учебе!");
+        Console.WriteLine($"Привет, {name}! Сколько будет 100 * 100!");
     }
 }
