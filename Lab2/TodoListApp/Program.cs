@@ -45,3 +45,13 @@ namespace TodoListApp
                 }
                 else if (input.StartsWith("add ", StringComparison.OrdinalIgnoreCase))
                 {
+                    
+                     // Извлекаем текст задачи с помощью Split
+                    string[] parts = input.Split(new[] { ' ' }, 2);
+                    if (parts.Length < 2 || string.IsNullOrWhiteSpace(parts[1]))
+                    {
+                        Console.WriteLine("Ошибка: после команды 'add' нужно ввести текст задачи.\n");
+                        continue;
+                    }
+
+                    string newTask = parts[1];
