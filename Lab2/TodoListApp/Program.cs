@@ -20,3 +20,11 @@ namespace TodoListApp
             int todoCount = 0;     
             Console.WriteLine("--- Приложение TodoList запущенно ---");
             Console.WriteLine("Введите 'help' для просмотра списка команд.\n");
+
+             // Пункт 3: Бесконечный цикл для проверки команд
+            while (true)
+            {
+                Console.Write("Введите команду: ");
+                string? input = Console.ReadLine()?.Trim();
+
+                if (string.IsNullOrEmpty(input)) continue;
