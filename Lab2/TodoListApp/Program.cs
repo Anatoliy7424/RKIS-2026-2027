@@ -9,7 +9,12 @@ namespace TodoListApp
              // Фикс кодировки, чтобы русские буквы не превращались в закорючки
             Console.InputEncoding = System.Text.Encoding.UTF8;
             Console.OutputEncoding = System.Text.Encoding.UTF8;
-            
+
+            // Данные профиля (для команды profile)
+                        string firstName = "Анатолий";
+                        string lastName = "Васильев";
+                        int birthYear = 2004;
+                        
             Console.WriteLine("========================================");
             Console.WriteLine("Работу выполнил студент: [Васильев]");
             Console.WriteLine("========================================\n");
