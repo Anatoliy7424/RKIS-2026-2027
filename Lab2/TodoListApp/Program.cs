@@ -28,3 +28,20 @@ namespace TodoListApp
                 string? input = Console.ReadLine()?.Trim();
 
                 if (string.IsNullOrEmpty(input)) continue;
+
+                // Пункт 4: Реализация команд
+                if (input.ToLower() == "help")
+                {
+                    Console.WriteLine("\nДоступные команды:");
+                    Console.WriteLine("  help    - вывести список всех команд");
+                    Console.WriteLine("  profile - вывести данные пользователя");
+                    Console.WriteLine("  add     - добавить новую задачу (Формат: add текст задачи)");
+                    Console.WriteLine("  view    - вывести все задачи");
+                    Console.WriteLine("  exit    - завершить работу программы\n");
+                }
+                else if (input.ToLower() == "profile")
+                {
+                    Console.WriteLine($"\nПрофиль: {firstName} {lastName}, <{birthYear}>\n");
+                }
+                else if (input.StartsWith("add ", StringComparison.OrdinalIgnoreCase))
+                {
