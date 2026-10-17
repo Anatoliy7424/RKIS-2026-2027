@@ -83,3 +83,19 @@ namespace TodoListApp
                 {
                     Console.WriteLine("\n--- Список ваших задач ---");
                     int printed = 0;
+                      // Выводим только непустые элементы
+                    for (int i = 0; i < todoCount; i++)
+                    {
+                        if (!string.IsNullOrEmpty(todos[i]))
+                        {
+                            Console.WriteLine($"{printed + 1}. {todos[i]}");
+                            printed++;
+                        }
+                    }
+
+                    if (printed == 0) Console.WriteLine("(список задач пуст)");
+                    Console.WriteLine("--------------------------\n");
+                }
+                else if (input.ToLower() == "exit")
+                {
+                    Console.WriteLine("До свидания!");
