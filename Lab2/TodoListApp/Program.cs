@@ -99,3 +99,13 @@ namespace TodoListApp
                 else if (input.ToLower() == "exit")
                 {
                     Console.WriteLine("До свидания!");
+                    break; // Прерываем бесконечный цикл
+                }
+                else
+                {
+                    Console.WriteLine("Неизвестная команда. Введите 'help' для подсказки.\n");
+                }
+            }
+        }
+    }
+}
