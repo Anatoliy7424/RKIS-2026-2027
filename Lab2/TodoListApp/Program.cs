@@ -63,3 +63,23 @@ namespace TodoListApp
                         
                         // Создаем новый массив в 2 раза длиннее текущего
                         string[] newTodos = new string[todos.Length * 2];
+
+                         // Через цикл перезаписываем содержимое
+                        for (int i = 0; i < todos.Length; i++)
+                        {
+                            newTodos[i] = todos[i];
+                        }
+                        
+                        // Записываем в переменную todos новый массив
+                        todos = newTodos;
+                    }
+
+                    // Добавляем задачу в массив
+                    todos[todoCount] = newTask;
+                    todoCount++;
+                    Console.WriteLine("Задача успешно добавлена!\n");
+                }
+                else if (input.ToLower() == "view")
+                {
+                    Console.WriteLine("\n--- Список ваших задач ---");
+                    int printed = 0;
