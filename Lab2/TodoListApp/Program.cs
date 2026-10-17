@@ -6,7 +6,10 @@ namespace TodoListApp
     {
         static void Main(string[] args)
         {
-            // Шаг 7: Информация об авторе
+             // Фикс кодировки, чтобы русские буквы не превращались в закорючки
+            Console.InputEncoding = System.Text.Encoding.UTF8;
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
+            
             Console.WriteLine("========================================");
             Console.WriteLine("Работу выполнил студент: [Васильев]");
             Console.WriteLine("========================================\n");
