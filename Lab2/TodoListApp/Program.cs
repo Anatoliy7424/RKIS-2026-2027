@@ -45,7 +45,7 @@ namespace TodoListApp
                 }
                 else if (input.StartsWith("add ", StringComparison.OrdinalIgnoreCase))
                 {
-                    
+
                      // Извлекаем текст задачи с помощью Split
                     string[] parts = input.Split(new[] { ' ' }, 2);
                     if (parts.Length < 2 || string.IsNullOrWhiteSpace(parts[1]))
@@ -55,3 +55,11 @@ namespace TodoListApp
                     }
 
                     string newTask = parts[1];
+
+                     // Пункт 5: Проверка, хватит ли места в массиве
+                    if (todoCount >= todos.Length)
+                    {
+                        Console.WriteLine($"[Система]: Места нет! Расширяю массив с {todos.Length} до {todos.Length * 2} элементов.");
+                        
+                        // Создаем новый массив в 2 раза длиннее текущего
+                        string[] newTodos = new string[todos.Length * 2];
