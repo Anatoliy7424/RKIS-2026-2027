@@ -69,7 +69,41 @@ namespace TodoListApp
                 }
             }
         }
+                // Метод view принимает строку с флагами и выводит таблицу
+        private static void ExecuteViewCommand(string input)
+        {
+            Console.WriteLine("\n--- Список ваших задач ---");
+            if (_todoCount == 0)
+            {
+                Console.WriteLine("(список задач пуст)\n");
+                return;
+            }
 
+            // Парсинг флагов отображения (Пункт 4)
+            bool showIndex = input.Contains("--index") || input.Contains(" -i") || input.Contains("--all") || input.Contains(" -a");
+            bool showStatus = input.Contains("--status") || input.Contains(" -s") || input.Contains("--all") || input.Contains(" -a");
+            bool showDate = input.Contains("--update-date") || input.Contains(" -d") || input.Contains("--all") || input.Contains(" -a");
+
+            for (int i = 0; i < _todoCount; i++)
+            {
+                // Обрезка текста до 30 символов для таблицы (Пункт 4)
+                string text = _todos[i]?.Replace(Environment.NewLine, " ") ?? "";
+                if (text.Length > 30)
+                {
+                    text = text.Substring(0, 30) + "...";
+                }
+
+                string row = text;
+
+                // Сборка строки по флагам
+                if (showIndex) row = $"[{i}] " + row;
+                if (showStatus) row += " | " + (_statuses[i] ? "сделано" : "не сделано");
+                if (showDate) row += $" | {_dates[i]:dd.MM.yyyy HH:mm:ss}";
+
+                Console.WriteLine(row);
+            }
+            Console.WriteLine("--------------------------\n");
+        }
         private static void ShowHelp()
         {
 
@@ -149,24 +183,7 @@ namespace TodoListApp
             _todoCount++;
             Console.WriteLine("Задача успешно добавлена!\n");
         }
-
-        private static void ExecuteViewCommand()
-        {
-            Console.WriteLine("\n--- Список ваших задач ---");
-            if (_todoCount == 0)
-            {
-                Console.WriteLine("(список задач пуст)");
-            }
-            else
-            {
-                for (int i = 0; i < _todoCount; i++)
-                {
-                    string status = _statuses[i] ? "сделано" : "не сделано";
-                    Console.WriteLine($"[{i}] {_todos[i]} - <{status}> - <{_dates[i]:dd.MM.yyyy HH:mm:ss}>");
-                }
-            }
-            Console.WriteLine("--------------------------\n");
-        }
+        
         // --- В КЛАСС ДОБАВИЛИ НОВЫЕ МЕТОДЫ ---
         private static void ExecuteDoneCommand(string input)
         {
