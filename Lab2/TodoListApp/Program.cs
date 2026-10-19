@@ -46,6 +46,18 @@ namespace TodoListApp
                 {
                     ExecuteViewCommand();
                 }
+                else if (input.StartsWith("done ", StringComparison.OrdinalIgnoreCase))
+                {
+                    ExecuteDoneCommand(input);
+                }
+                else if (input.StartsWith("delete ", StringComparison.OrdinalIgnoreCase))
+                {
+                    ExecuteDeleteCommand(input);
+                }
+                else if (input.StartsWith("update ", StringComparison.OrdinalIgnoreCase))
+                {
+                    ExecuteUpdateCommand(input);
+                }
                 else if (lowerInput == "exit")
                 {
                     Console.WriteLine("До свидания!");
@@ -126,6 +138,56 @@ namespace TodoListApp
                 }
             }
             Console.WriteLine("--------------------------\n");
+        }
+        // --- В КЛАСС ДОБАВИЛИ НОВЫЕ МЕТОДЫ ---
+        private static void ExecuteDoneCommand(string input)
+        {
+            if (int.TryParse(input.Substring(5).Trim(), out int index) && index >= 0 && index < _todoCount)
+            {
+                _statuses[index] = true;
+                _dates[index] = DateTime.Now;
+                Console.WriteLine($"Задача [{index}] выполнена.\n");
+            }
+            else
+            {
+                Console.WriteLine("Ошибка: некорректный индекс задачи.\n");
+            }
+        }
+
+        private static void ExecuteDeleteCommand(string input)
+        {
+            if (int.TryParse(input.Substring(7).Trim(), out int index) && index >= 0 && index < _todoCount)
+            {
+                // Сдвиг элементов влево
+                for (int i = index; i < _todoCount - 1; i++)
+                {
+                    _todos[i] = _todos[i + 1];
+                    _statuses[i] = _statuses[i + 1];
+                    _dates[i] = _dates[i + 1];
+                }
+                _todoCount--;
+                Console.WriteLine($"Задача [{index}] удалена.\n");
+            }
+            else
+            {
+                Console.WriteLine("Ошибка: некорректный индекс задачи.\n");
+            }
+        }
+
+        private static void ExecuteUpdateCommand(string input)
+        {
+            string args = input.Substring(7).Trim();
+            string[] parts = args.Split(new[] { ' ' }, 2);
+            if (parts.Length == 2 && int.TryParse(parts[0], out int index) && index >= 0 && index < _todoCount)
+            {
+                _todos[index] = parts[1].Trim('\"');
+                _dates[index] = DateTime.Now;
+                Console.WriteLine($"Задача [{index}] обновлена.\n");
+            }
+            else
+            {
+                Console.WriteLine("Ошибка: используйте формат 'update <индекс> <текст>'.\n");
+            }
         }
     }
 }
