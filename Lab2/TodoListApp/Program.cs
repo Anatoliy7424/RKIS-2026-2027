@@ -11,6 +11,9 @@ namespace TodoListApp
         // Понятные имена в едином стиле (Пункт 2, дефис 1)
         private static string[] _todos = new string[INITIAL_CAPACITY];
         private static int _todoCount = 0;
+                private static bool[] _statuses = new bool[INITIAL_CAPACITY];
+        private static DateTime[] _dates = new DateTime[INITIAL_CAPACITY];
+
 
         static void Main(string[] args)
         {
@@ -47,6 +50,26 @@ namespace TodoListApp
         private static void ShowHelp()
         {
             Console.WriteLine("\nДоступные команды: help, exit\n");
+        }
+        private static void EnsureCapacity()
+        {
+            if (_todoCount < _todos.Length) return;
+            int newCapacity = _todos.Length * CAPACITY_MULTIPLIER;
+            
+            string[] newTodos = new string[newCapacity];
+            bool[] newStatuses = new bool[newCapacity];
+            DateTime[] newDates = new DateTime[newCapacity];
+
+            for (int i = 0; i < _todos.Length; i++)
+            {
+                newTodos[i] = _todos[i];
+                newStatuses[i] = _statuses[i];
+                newDates[i] = _dates[i];
+            }
+
+            _todos = newTodos;
+            _statuses = newStatuses;
+            _dates = newDates;
         }
     }
 }
