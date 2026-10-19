@@ -44,7 +44,7 @@ namespace TodoListApp
                 }
                 else if (lowerInput.StartsWith("view"))
                 {
-                    ExecuteViewCommand();
+                    ExecuteViewCommand(input);
                 }
                 else if (input.StartsWith("done ", StringComparison.OrdinalIgnoreCase))
                 {
@@ -103,21 +103,49 @@ namespace TodoListApp
             _dates = newDates;
         }
 
-                // --- В САМЫЙ НИЗ КЛАССА ДОБАВИЛИ МЕТОДЫ ЛОГИКИ ---
-        private static void ExecuteAddCommand(string input)
+                // --- Добавлен многострочный режим ввода для команды add с флагами ---
+                private static void ExecuteAddCommand(string input)
         {
-            string[] parts = input.Split(new[] { ' ' }, 2);
-            if (parts.Length < 2 || string.IsNullOrWhiteSpace(parts[1]))
+            // Проверяем флаги многострочного ввода (Пункт 3)
+            bool isMultiline = input.Contains("--multiline") || input.Contains(" -m");
+            string taskText = "";
+
+            if (isMultiline)
             {
-                Console.WriteLine("Ошибка: введите текст задачи после 'add'.\n");
+                Console.WriteLine("Введите строки задачи (для окончания введите !end):");
+                System.Text.StringBuilder sb = new System.Text.StringBuilder();
+                while (true)
+                {
+                    Console.Write("> ");
+                    string? line = Console.ReadLine();
+                    if (line == "!end") break;
+                    if (line != null) sb.AppendLine(line);
+                }
+                taskText = sb.ToString().TrimEnd();
+            }
+            else
+            {
+                // Обычный однострочный режим
+                string[] parts = input.Split(new[] { ' ' }, 2);
+                if (parts.Length < 2 || string.IsNullOrWhiteSpace(parts[1]))
+                {
+                    Console.WriteLine("Ошибка: введите текст задачи после 'add'.\n");
+                    return;
+                }
+                taskText = parts[1];
+            }
+
+            if (string.IsNullOrWhiteSpace(taskText))
+            {
+                Console.WriteLine("Ошибка: текст задачи не может быть пустым.\n");
                 return;
             }
 
             EnsureCapacity();
 
-            _todos[_todoCount] = parts[1];
-            _statuses[_todoCount] = false; // Запись false в statuses
-            _dates[_todoCount] = DateTime.Now; // Запись текущей даты в dates
+            _todos[_todoCount] = taskText;
+            _statuses[_todoCount] = false;
+            _dates[_todoCount] = DateTime.Now;
             _todoCount++;
             Console.WriteLine("Задача успешно добавлена!\n");
         }
