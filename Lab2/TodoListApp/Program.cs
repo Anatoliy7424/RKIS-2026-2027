@@ -57,7 +57,11 @@ namespace TodoListApp
                 else if (input.StartsWith("update ", StringComparison.OrdinalIgnoreCase))
                 {
                     ExecuteUpdateCommand(input);
+                                else if (input.StartsWith("read ", StringComparison.OrdinalIgnoreCase))
+                {
+                    ExecuteReadCommand(input);
                 }
+}
                 else if (lowerInput == "exit")
                 {
                     Console.WriteLine("До свидания!");
