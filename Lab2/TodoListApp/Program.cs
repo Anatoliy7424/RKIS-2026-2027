@@ -42,7 +42,7 @@ namespace TodoListApp
                 {
                     ExecuteAddCommand(input);
                 }
-                else if (lowerInput == "view")
+                else if (lowerInput.StartsWith("view"))
                 {
                     ExecuteViewCommand();
                 }
