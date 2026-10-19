@@ -57,11 +57,11 @@ namespace TodoListApp
                 else if (input.StartsWith("update ", StringComparison.OrdinalIgnoreCase))
                 {
                     ExecuteUpdateCommand(input);
-                                else if (input.StartsWith("read ", StringComparison.OrdinalIgnoreCase))
+                }
+                else if (input.StartsWith("read ", StringComparison.OrdinalIgnoreCase))
                 {
                     ExecuteReadCommand(input);
                 }
-}
                 else if (lowerInput == "exit")
                 {
                     Console.WriteLine("До свидания!");
@@ -113,11 +113,15 @@ namespace TodoListApp
 
             // Обновили справку, чтобы новые команды отображались в меню
             Console.WriteLine("\nДоступные команды:");
-            Console.WriteLine("  help               - показать справку");
-            Console.WriteLine("  add <текст задачи> - добавить новую задачу");
-            Console.WriteLine("  view               - показать все задачи");
-            Console.WriteLine("  exit               - выйти из программы\n");
-            Console.WriteLine("\nДоступные команды: help, exit\n");
+            Console.WriteLine("  help                     - показать эту справку");
+            Console.WriteLine("  profile                  - показать профиль пользователя");
+            Console.WriteLine("  add <текст> [--multiline] - добавить задачу (опционально многострочно)");
+            Console.WriteLine("  view [-i] [-s] [-d] [-a]  - показать задачи таблицей с флагами фильтрации");
+            Console.WriteLine("  read <индекс>            - открыть полный текст конкретной задачи");
+            Console.WriteLine("  done <индекс>            - отметить задачу как выполненную");
+            Console.WriteLine("  delete <индекс>          - удалить задачу");
+            Console.WriteLine("  update <индекс> <текст>  - обновить текст задачи");
+            Console.WriteLine("  exit                     - выйти из программы\n");
         }
          // --- ДОБАВИЛИ МЕТОД ---
         private static void EnsureCapacity()
