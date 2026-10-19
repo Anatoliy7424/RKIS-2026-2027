@@ -217,5 +217,20 @@ namespace TodoListApp
                 Console.WriteLine("Ошибка: используйте формат 'update <индекс> <текст>'.\n");
             }
         }
+            // Пункт 5: Метод для просмотра полного текста задачи (без обрезки)
+        private static void ExecuteReadCommand(string input)
+        {
+            if (int.TryParse(input.Substring(5).Trim(), out int index) && index >= 0 && index < _todoCount)
+            {
+                string status = _statuses[index] ? "выполнена" : "не выполнена";
+                Console.WriteLine($"\nПолный текст задачи:\n{_todos[index]}");
+                Console.WriteLine($"Статус: {status}");
+                Console.WriteLine($"Дата последнего изменения: {_dates[index]:dd.MM.yyyy HH:mm:ss}\n");
+            }
+            else
+            {
+                Console.WriteLine("Ошибка: некорректный индекс задачи.\n");
+            }
+        }
     }
 }
