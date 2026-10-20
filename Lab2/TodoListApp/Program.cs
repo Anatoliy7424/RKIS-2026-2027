@@ -17,8 +17,10 @@ namespace TodoListApp
         private static DateTime[] _dates = new DateTime[INITIAL_CAPACITY];
                 private static Profile _userProfile = new Profile("Анатолий", "Васильев", 2004);
                         private static TodoList _todoList = new TodoList();
-
-
+         // Пункт 6: Формирование безопасных путей к файлам с помощью Path.Combine
+        private static readonly string _dataDir = "data";
+        private static readonly string _todoPath = Path.Combine("data", "todo.csv");
+        private static readonly string _profilePath = Path.Combine("data", "profile.txt");
         static void Main(string[] args)
         {
             Console.InputEncoding = System.Text.Encoding.UTF8;
