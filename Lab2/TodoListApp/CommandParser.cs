@@ -23,6 +23,11 @@ namespace TodoListApp
             {
                 return new ViewCommand(todoList, inputString);
             }
+                        if (inputString.StartsWith("status ", StringComparison.OrdinalIgnoreCase))
+            {
+                return new StatusCommand(todoList, inputString);
+            }
+
             // Если команда неизвестна программе, возвращаем специальную заглушку
             return new UnknownCommand(inputString);
         }
