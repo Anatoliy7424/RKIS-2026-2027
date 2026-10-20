@@ -43,3 +43,9 @@ namespace TodoListApp
                 }
                 taskText = parts[1];
             }
+             // Вызов метода работы со списком задач TodoList (Пункт 3, дефис 4)
+            _todoList.Add(new TodoItem(taskText));
+            Console.WriteLine("Задача успешно добавлена!\n");
+        }
+    }
+}
