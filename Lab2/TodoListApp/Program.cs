@@ -151,7 +151,7 @@ namespace TodoListApp
             Console.WriteLine("  add <текст> [--multiline] - добавить задачу (опционально многострочно)");
             Console.WriteLine("  view [-i] [-s] [-d] [-a]  - показать задачи таблицей с флагами фильтрации");
             Console.WriteLine("  read <индекс>            - открыть полный текст конкретной задачи");
-            Console.WriteLine("  done <индекс>            - отметить задачу как выполненную");
+            Console.WriteLine("  status <индекс> <статус> - изменить статус задачи (NotStarted, InProgress, Completed, Postponed, Failed)");
             Console.WriteLine("  delete <индекс>          - удалить задачу");
             Console.WriteLine("  update <индекс> <текст>  - обновить текст задачи");
             Console.WriteLine("  exit                     - выйти из программы\n");
