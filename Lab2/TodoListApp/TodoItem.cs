@@ -17,3 +17,34 @@ namespace TodoListApp
             IsDone = false;
             LastUpdate = DateTime.Now;
         }
+// Методы класса (Пункт 2, дефис 3)
+        public void MarkDone()
+        {
+            IsDone = true;
+            LastUpdate = DateTime.Now;
+        }
+
+        public void UpdateText(string newText)
+        {
+            Text = newText;
+            LastUpdate = DateTime.Now;
+        }
+
+        public string GetShortInfo()
+        {
+            string shortText = Text.Replace(Environment.NewLine, " ");
+            if (shortText.Length > 30)
+            {
+                shortText = shortText.Substring(0, 30) + "...";
+            }
+            string status = IsDone ? "сделано" : "не сделано";
+            return $"{shortText} | {status} | {LastUpdate:dd.MM.yyyy HH:mm:ss}";
+        }
+
+        public string GetFullInfo()
+        {
+            string status = IsDone ? "выполнена" : "не выполнена";
+            return $"\nПолный текст задачи:\n{Text}\nСтатус: {status}\nДата последнего изменения: {LastUpdate:dd.MM.yyyy HH:mm:ss}\n";
+        }
+    }
+}
