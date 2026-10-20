@@ -23,4 +23,18 @@ namespace TodoListApp
             return new UnknownCommand(inputString);
         }
     }
- 
+     // Вспомогательный класс для обработки неизвестных команд в паттерне
+    public class UnknownCommand : ICommand
+    {
+        private readonly string _input;
+        public UnknownCommand(string input) { _input = input; }
+
+        public void Execute() 
+        {
+            if (_input.ToLower() != "help" && _input.ToLower() != "exit")
+            {
+                Console.WriteLine("Неизвестная команда. Введите 'help'.\n");
+            }
+        }
+    }
+}
