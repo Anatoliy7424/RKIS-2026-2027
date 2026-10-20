@@ -64,7 +64,7 @@ namespace TodoListApp
                     ShowHelp();
                 }
                                 // --- Пункт 5: Единая точка обработки ООП-команд через паттерн Команда ---
-                else if (lowerInput == "profile" || input.StartsWith("add ", StringComparison.OrdinalIgnoreCase) || lowerInput.StartsWith("view"))
+                else if (lowerInput == "profile" || input.StartsWith("add ", StringComparison.OrdinalIgnoreCase) || lowerInput.StartsWith("view") || input.StartsWith("status ", StringComparison.OrdinalIgnoreCase))
                 {
                     ICommand command = CommandParser.Parse(input, _todoList, _userProfile);
                     command.Execute();
