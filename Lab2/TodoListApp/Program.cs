@@ -39,10 +39,11 @@ namespace TodoListApp
                 {
                     ShowHelp();
                 }
-                                else if (lowerInput == "profile")
+                                // --- Пункт 5: Единая точка обработки ООП-команд через паттерн Команда ---
+                else if (lowerInput == "profile" || input.StartsWith("add ", StringComparison.OrdinalIgnoreCase) || lowerInput.StartsWith("view"))
                 {
-                    // Вызываем метод GetInfo из созданного класса Profile
-                    Console.WriteLine($"\nПрофиль: {_userProfile.GetInfo()}\n");
+                    ICommand command = CommandParser.Parse(input, _todoList, _userProfile);
+                    command.Execute();
                 }
 
                 // --- УСЛОВИЯ СВЯЗИ ДЛЯ ADD И VIEW ---
