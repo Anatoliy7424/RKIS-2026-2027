@@ -19,4 +19,8 @@ namespace TodoListApp
             {
                 return new AddCommand(todoList, inputString);
             }
-            
+            // Если команда неизвестна программе, возвращаем специальную заглушку
+            return new UnknownCommand(inputString);
+        }
+    }
+ 
