@@ -49,7 +49,7 @@ namespace TodoListApp
 
                     // Заменяем переносы строк на строку "\\n" (Пункт 3, совет)
                     string safeText = item.Text.Replace("\"", "\"\"").Replace(Environment.NewLine, "\\n").Replace("\n", "\\n");
-                    sw.WriteLine($"{index};\"{safeText}\";{item.IsDone.ToString().ToLower()};{item.LastUpdate:yyyy-MM-ddTHH:mm:ss}");
+                    sw.WriteLine($"{index};\"{safeText}\";{item.Status.ToString().ToLower()};{item.LastUpdate:yyyy-MM-ddTHH:mm:ss}");
                     index++;
                 }
             }
@@ -71,9 +71,12 @@ namespace TodoListApp
                     bool isDone = parts[2].ToLower() == "true";
                     DateTime date = DateTime.TryParse(parts[3], out DateTime d) ? d : DateTime.Now;
 
+                                        // Сначала парсим статус из CSV, а затем создаем объект задачи
+                    TodoStatus status = Enum.TryParse(parts[2], true, out TodoStatus parsedStatus) ? parsedStatus : TodoStatus.NotStarted;
+
                     TodoItem item = new TodoItem(text)
                     {
-                        IsDone = isDone,
+                        Status = status,
                         LastUpdate = date
                     };
                     list.Add(item);
