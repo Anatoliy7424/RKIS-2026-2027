@@ -1,5 +1,5 @@
 using System;
-
+using System.Collections.Generic;
 namespace TodoListApp
 {
     // Пункт 3: Класс-хранилище для управления списком задач
@@ -9,32 +9,25 @@ namespace TodoListApp
         private const int CAPACITY_MULTIPLIER = 2;
 
         // Приватное поле: внутренний массив объектов TodoItem (Пункт 3, дефис 1)
-        private TodoItem[] _items;
-        private int _todoCount;
-
+         // Пункт 1: Задачи теперь хранятся в списке, а не в массиве
+        private readonly List<TodoItem> _items = new List<TodoItem>();
         public TodoList()
         {
-            _items = new TodoItem[INITIAL_CAPACITY];
-            _todoCount = 0;
+            // Конструктор оставляем пустым, список инициализируется сам
         }
 // Методы класса (Пункт 3, дефис 2)
-        public void Add(TodoItem item)
+       public void Add(TodoItem item)
         {
-            IncreaseArrayIfNeeded(); // Автоматическое расширение при переполнении
-            _items[_todoCount] = item;
-            _todoCount++;
+            // Просто добавляем элемент во встроенный список
+            _items.Add(item);
         }
 
         public void Delete(int index)
         {
-            if (index >= 0 && index < _todoCount)
+            if (index >= 0 && index < _items.Count)
             {
-                // Сдвиг объектов встроенного массива влево
-                for (int i = index; i < _todoCount - 1; i++)
-                {
-                    _items[i] = _items[i + 1];
-                }
-                _todoCount--;
+            // Встроенный метод списка сам удалит элемент и сдвинет остальные!
+            _items.RemoveAt(index);
                 Console.WriteLine($"Задача [{index}] успешно удалена.\n");
             }
             else
@@ -44,13 +37,13 @@ namespace TodoListApp
         }
                 public void View(bool showIndex, bool showStatus, bool showDate, string rawInput)
         {
-            if (_todoCount == 0)
+            if (_items.Count == 0)
             {
                 Console.WriteLine("(список задач пуст)\n");
                 return;
             }
 
-            for (int i = 0; i < _todoCount; i++)
+            for (int i = 0; i < _items.Count; i++)
             {
                 string info = _items[i].GetShortInfo();
                 string row = _items[i].Text;
@@ -66,7 +59,7 @@ namespace TodoListApp
 
                 // Форматируем вывод в зависимости от флагов
                 if (showIndex) row = $"[{i}] " + row;
-                if (showStatus) row += " | " + (_items[i].IsDone ? "сделано" : "не сделано");
+                if (showStatus) row += " | " + _items[i].Status.ToString();
                 if (showDate) row += $" | {_items[i].LastUpdate:dd.MM.yyyy HH:mm:ss}";
 
                 Console.WriteLine(row);
@@ -76,27 +69,32 @@ namespace TodoListApp
 
         public TodoItem? GetItem(int index)
         {
-            if (index >= 0 && index < _todoCount)
+            if (index >= 0 && index < _items.Count)
             {
                 return _items[index];
             }
             return null;
         }
-
-        // Приватный метод синхронного увеличения массива (Пункт 3, дефис 2, подточка 5)
-        private void IncreaseArrayIfNeeded()
+        // Пункт 1: Реализуйте индексатор для доступа к задачам по индексу
+        public TodoItem? this[int index]
         {
-            if (_todoCount < _items.Length) return;
-
-            int newCapacity = _items.Length * CAPACITY_MULTIPLIER;
-            TodoItem[] newItems = new TodoItem[newCapacity];
-
-            for (int i = 0; i < _items.Length; i++)
+            get
             {
-                newItems[i] = _items[i];
+                if (index >= 0 && index < _items.Count)
+                {
+                    return _items[index];
+                }
+                return null;
             }
+        }
 
-            _items = newItems;
+        // Пункт 1: Реализуйте метод-итератор с использованием yield return
+        public System.Collections.IEnumerator GetEnumerator()
+        {
+            foreach (var item in _items)
+            {
+                yield return item;
+            }
         }
     }
 }

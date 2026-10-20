@@ -48,13 +48,13 @@ namespace TodoListApp
             {
                 shortText = shortText.Substring(0, 30) + "...";
             }
-            string status = IsDone ? "сделано" : "не сделано";
+            string status = Status.ToString();
             return $"{shortText} | {status} | {LastUpdate:dd.MM.yyyy HH:mm:ss}";
         }
 
         public string GetFullInfo()
         {
-            string status = IsDone ? "выполнена" : "не выполнена";
+            string status = Status.ToString();
             return $"\nПолный текст задачи:\n{Text}\nСтатус: {status}\nДата последнего изменения: {LastUpdate:dd.MM.yyyy HH:mm:ss}\n";
         }
     }
