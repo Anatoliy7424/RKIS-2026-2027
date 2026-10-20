@@ -45,6 +45,8 @@ namespace TodoListApp
             }
              // Вызов метода работы со списком задач TodoList (Пункт 3, дефис 4)
             _todoList.Add(new TodoItem(taskText));
+            // Пункт 4: Автоматическое сохранение изменений в файл
+            FileManager.SaveTodos(_todoList, Path.Combine("data", "todo.csv"));
             Console.WriteLine("Задача успешно добавлена!\n");
         }
     }
