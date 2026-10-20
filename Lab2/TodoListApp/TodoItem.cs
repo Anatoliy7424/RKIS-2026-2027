@@ -16,22 +16,24 @@ namespace TodoListApp
     {
         // Свойства задачи (Пункт 2, дефис 1)
         public string Text { get; set; }
-        public bool IsDone { get; set; }
+        public TodoStatus Status { get; set; }
         public DateTime LastUpdate { get; set; }
 
         // Конструктор (Пункт 2, дефис 2)
         public TodoItem(string text)
         {
             Text = text;
-            IsDone = false;
+            Status = TodoStatus.NotStarted;
             LastUpdate = DateTime.Now;
         }
 // Методы класса (Пункт 2, дефис 3)
-        public void MarkDone()
-        {
-            IsDone = true;
-            LastUpdate = DateTime.Now;
-        }
+             // Обновление статуса задачи (Пункт 4, дефис 1)
+     public void SetStatus(TodoStatus newStatus)
+     {
+         Status = newStatus;
+         LastUpdate = DateTime.Now;
+     }
+
 
         public void UpdateText(string newText)
         {
