@@ -2,6 +2,15 @@ using System;
 
 namespace TodoListApp
 {
+    // Пункт 2 задания 9: Расширение статусов через перечисление enum
+    public enum TodoStatus
+    {
+        NotStarted,   // не начато
+        InProgress,   // в процессе
+        Completed,    // выполнено
+        Postponed,    // отложено
+        Failed        // провалено
+    }
     // Пункт 2: Класс, описывающий одну задачу
     public class TodoItem
     {
