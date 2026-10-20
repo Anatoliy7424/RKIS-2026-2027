@@ -19,6 +19,10 @@ namespace TodoListApp
             {
                 return new AddCommand(todoList, inputString);
             }
+                        if (lowerInput == "view" || inputString.StartsWith("view ", StringComparison.OrdinalIgnoreCase))
+            {
+                return new ViewCommand(todoList, inputString);
+            }
             // Если команда неизвестна программе, возвращаем специальную заглушку
             return new UnknownCommand(inputString);
         }
