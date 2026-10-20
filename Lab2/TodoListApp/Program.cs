@@ -15,6 +15,8 @@ namespace TodoListApp
           // --- ДОБАВИЛИ ДВА МАССИВА ---
                 private static bool[] _statuses = new bool[INITIAL_CAPACITY];
         private static DateTime[] _dates = new DateTime[INITIAL_CAPACITY];
+                private static Profile _userProfile = new Profile("Анатолий", "Васильев", 2004);
+                        private static TodoList _todoList = new TodoList();
 
 
         static void Main(string[] args)
@@ -37,6 +39,12 @@ namespace TodoListApp
                 {
                     ShowHelp();
                 }
+                                else if (lowerInput == "profile")
+                {
+                    // Вызываем метод GetInfo из созданного класса Profile
+                    Console.WriteLine($"\nПрофиль: {_userProfile.GetInfo()}\n");
+                }
+
                 // --- УСЛОВИЯ СВЯЗИ ДЛЯ ADD И VIEW ---
                                 else if (input.StartsWith("add ", StringComparison.OrdinalIgnoreCase))
                 {
