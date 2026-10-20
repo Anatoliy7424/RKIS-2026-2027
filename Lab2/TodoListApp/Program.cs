@@ -28,7 +28,29 @@ namespace TodoListApp
 
             Console.WriteLine("--- Приложение TodoList ---");
             Console.WriteLine("Введите 'help' для просмотра команд.\n");
+            // --- Пункт 5: Проверка директории и загрузка данных при запуске ---
+            FileManager.EnsureDataDirectory(_dataDir);
 
+            // Если файлы существуют — загружаем, если нет — создаем базовые (Пункт 5)
+            if (System.IO.File.Exists(_profilePath))
+            {
+                _userProfile = FileManager.LoadProfile(_profilePath);
+            }
+            else
+            {
+                _userProfile = new Profile("Анатолий", "Васильев", 2004);
+                FileManager.SaveProfile(_userProfile, _profilePath);
+            }
+
+            if (System.IO.File.Exists(_todoPath))
+            {
+                _todoList = FileManager.LoadTodos(_todoPath);
+            }
+            else
+            {
+                _todoList = new TodoList();
+                FileManager.SaveTodos(_todoList, _todoPath);
+            }
             while (true)
             {
                 Console.Write("Введите команду: ");
