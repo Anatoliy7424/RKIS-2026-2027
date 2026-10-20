@@ -17,3 +17,28 @@ namespace TodoListApp
             _items = new TodoItem[INITIAL_CAPACITY];
             _todoCount = 0;
         }
+// Методы класса (Пункт 3, дефис 2)
+        public void Add(TodoItem item)
+        {
+            IncreaseArrayIfNeeded(); // Автоматическое расширение при переполнении
+            _items[_todoCount] = item;
+            _todoCount++;
+        }
+
+        public void Delete(int index)
+        {
+            if (index >= 0 && index < _todoCount)
+            {
+                // Сдвиг объектов встроенного массива влево
+                for (int i = index; i < _todoCount - 1; i++)
+                {
+                    _items[i] = _items[i + 1];
+                }
+                _todoCount--;
+                Console.WriteLine($"Задача [{index}] успешно удалена.\n");
+            }
+            else
+            {
+                Console.WriteLine("Ошибка: некорректный индекс задачи.\n");
+            }
+        }
