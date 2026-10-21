@@ -9,6 +9,10 @@ namespace TodoListApp
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public int BirthYear { get; set; }
+        // Пункт 2: Новые поля для многопользовательского режима
+        public Guid Id { get; set; }
+        public string Login { get; set; }
+        public string Password { get; set; }
 
         // Конструктор инициализирует базовые данные
         public Profile(string firstName, string lastName, int birthYear)
