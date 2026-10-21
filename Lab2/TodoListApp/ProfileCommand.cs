@@ -16,5 +16,9 @@ namespace TodoListApp
         {
             Console.WriteLine($"\nПрофиль: {_profile.GetInfo()}\n");
         }
+        // Пункт 5: Неотменяемая команда — метод оката оставляем пустым
+        public void Unexecute()
+        {
+        }
     }
 }
