@@ -66,7 +66,6 @@ namespace TodoListApp
             }
             Console.WriteLine("--------------------------\n");
         }
-
         public TodoItem? GetItem(int index)
         {
             if (index >= 0 && index < _items.Count)
@@ -87,7 +86,8 @@ namespace TodoListApp
                 return null;
             }
         }
-
+        // Публичный доступ к количеству элементов в списке
+public int Count => _items.Count;
         // Пункт 1: Реализуйте метод-итератор с использованием yield return
         public System.Collections.IEnumerator GetEnumerator()
         {

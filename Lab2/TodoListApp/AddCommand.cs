@@ -51,7 +51,6 @@ namespace TodoListApp
             FileManager.SaveTodos(_todoList, Path.Combine("data", "todo.csv"));
             Console.WriteLine("Задача успешно добавлена!\n");
         }
-    }
     // Пункт 4: Реализация отмены для отменяемой команды AddCommand
         public void Unexecute()
         {
@@ -79,4 +78,5 @@ namespace TodoListApp
                 }
             }
         }
+    }
 }
