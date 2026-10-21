@@ -24,13 +24,17 @@ namespace TodoListApp
         {
             // Просто добавляем элемент во встроенный список
             _items.Add(item);
+            OnTodoAdded?.Invoke(item);
         }
-
+    
         public void Delete(int index)
         {
             if (index >= 0 && index < _items.Count)
             {
-            // Встроенный метод списка сам удалит элемент и сдвинет остальные!
+            var deletedItem = _items[index];
+            _items.RemoveAt(index);
+            Console.WriteLine($"Задача [{index}] успешно удалена.\n");
+            OnTodoDeleted?.Invoke(deletedItem);
             _items.RemoveAt(index);
                 Console.WriteLine($"Задача [{index}] успешно удалена.\n");
             }
