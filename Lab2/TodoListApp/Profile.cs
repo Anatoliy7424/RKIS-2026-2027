@@ -25,6 +25,10 @@ namespace TodoListApp
         // Метод GetInfo возвращает отформатированную строку (Пункт 4, дефис 2)
         public string GetInfo()
         {
+            // Пункт 2: Автоматическое заполнение новых полей при создании
+            Id = Guid.NewGuid();
+            Login = firstName.ToLower(); // логин по умолчанию — имя маленькими буквами
+            Password = "123";            // пароль по умолчанию
             // Автоматический расчет возраста на основе текущего 2026 года
             int age = 2026 - BirthYear;
             return $"{FirstName} {LastName}, возраст {age}";
