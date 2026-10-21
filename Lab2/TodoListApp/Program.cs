@@ -56,29 +56,38 @@ namespace TodoListApp
                     AppInfo.Todos = new TodoList();
                     FileManager.SaveTodos(AppInfo.Todos, personalTodoPath);
                 }
-            while (true)
-            {
-                // Пункт 5: Запуск стартового меню входа/регистрации
-            if (!ShowAuthMenu())
-            {
-                Console.WriteLine("Выход из приложения.");
-                return;
-            }
+                            // Внутренний цикл выполнения команд для ТЕКУЩЕГО вошедшего пользователя
+                while (AppInfo.CurrentProfileId != null)
+                {
+                    Console.Write("Введите команду: ");
+                    string? input = Console.ReadLine()?.Trim();
+                    if (string.IsNullOrEmpty(input)) continue;
 
-            // Пункт 6: Формирование пути к персональному файлу задач на основе ID пользователя
-            string personalTodoPath = System.IO.Path.Combine("data", $"todos_{AppInfo.CurrentProfileId}.csv");
+                    string lowerInput = input.ToLower();
 
-            // Загружаем персональные задачи или создаем новые, если файла еще нет
-            if (System.IO.File.Exists(personalTodoPath))
-            {
-                AppInfo.Todos = FileManager.LoadTodos(personalTodoPath);
-            }
-            else
-            {
-                AppInfo.Todos = new TodoList();
-                FileManager.SaveTodos(AppInfo.Todos, personalTodoPath);
-            }
-            while (true)
+                    if (lowerInput == "exit")
+                    {
+                        Console.WriteLine("Программа завершена.");
+                        return; // Полный выход из приложения
+                    }
+
+                    if (lowerInput == "help")
+                    {
+                        ShowHelp();
+                        continue;
+                    }
+
+                    // Передаем управление паттерну Команда с использованием глобального состояния AppInfo
+                    ICommand command = CommandParser.Parse(input, AppInfo.Todos, AppInfo.CurrentProfile!);
+                    command.Execute();
+
+                    // Сохраняем в стек отмены только отменяемые команды (add и status)
+                    if (command is AddCommand || command is StatusCommand)
+                    {
+                        AppInfo.UndoStack.Push(command);
+                        AppInfo.RedoStack.Clear();
+                    }
+                }
             {
                 Console.Write("Введите команду: ");
                 string? input = Console.ReadLine()?.Trim();
