@@ -15,6 +15,10 @@ namespace TodoListApp
         {
             // Конструктор оставляем пустым, список инициализируется сам
         }
+        public event Action<TodoItem?>? OnTodoAdded;
+        public event Action<TodoItem?>? OnTodoDeleted;
+        public event Action<TodoItem?>? OnTodoUpdated;
+        public event Action<TodoItem?>? OnStatusChanged;
 // Методы класса (Пункт 3, дефис 2)
        public void Add(TodoItem item)
         {
