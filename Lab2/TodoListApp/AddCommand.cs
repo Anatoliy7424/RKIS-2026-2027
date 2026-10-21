@@ -8,7 +8,8 @@ namespace TodoListApp
        // Оформляем свойства и зависимости по требованиям методички (Пункт 3)
         private readonly TodoList _todoList;
         private readonly string _input;
-
+        // Поле для запоминания созданной задачи (Пункт 4)
+        private TodoItem? _addedItem;
         public AddCommand(TodoList todoList, string input)
         {
             _todoList = todoList;
@@ -43,8 +44,9 @@ namespace TodoListApp
                 }
                 taskText = parts[1];
             }
-             // Вызов метода работы со списком задач TodoList (Пункт 3, дефис 4)
-            _todoList.Add(new TodoItem(taskText));
+            // Создаем задачу, запоминаем её в поле класса и добавляем в список (Пункт 4)
+            _addedItem = new TodoItem(taskText);
+            _todoList.Add(_addedItem);
             // Пункт 4: Автоматическое сохранение изменений в файл
             FileManager.SaveTodos(_todoList, Path.Combine("data", "todo.csv"));
             Console.WriteLine("Задача успешно добавлена!\n");
