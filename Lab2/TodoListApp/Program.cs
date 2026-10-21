@@ -31,17 +31,8 @@ namespace TodoListApp
             // --- Пункт 5: Проверка директории и загрузка данных при запуске ---
             FileManager.EnsureDataDirectory(_dataDir);
 
-            // Если файлы существуют — загружаем, если нет — создаем базовые (Пункт 5)
-            if (System.IO.File.Exists(_profilePath))
-            {
-                _userProfile = FileManager.LoadProfile(_profilePath);
-            }
-            else
-            {
-                _userProfile = new Profile("Анатолий", "Васильев", 2004);
-                FileManager.SaveProfile(_userProfile, _profilePath);
-            }
-
+            // Пункт 3: Автоматическая загрузка списка всех профилей из profile.csv при старте
+            AppInfo.AllProfiles = FileManager.LoadAllProfiles(_profilePath);
             if (System.IO.File.Exists(_todoPath))
             {
                 _todoList = FileManager.LoadTodos(_todoPath);
