@@ -33,14 +33,25 @@ namespace TodoListApp
 
             // Пункт 3: Автоматическая загрузка списка всех профилей из profile.csv при старте
             AppInfo.AllProfiles = FileManager.LoadAllProfiles(_profilePath);
-            if (System.IO.File.Exists(_todoPath))
+            // Пункт 5: Запуск стартового меню входа/регистрации
+            if (!ShowAuthMenu())
             {
-                _todoList = FileManager.LoadTodos(_todoPath);
+                Console.WriteLine("Выход из приложения.");
+                return;
+            }
+
+            // Пункт 6: Формирование пути к персональному файлу задач на основе ID пользователя
+            string personalTodoPath = System.IO.Path.Combine("data", $"todos_{AppInfo.CurrentProfileId}.csv");
+
+            // Загружаем персональные задачи или создаем новые, если файла еще нет
+            if (System.IO.File.Exists(personalTodoPath))
+            {
+                AppInfo.Todos = FileManager.LoadTodos(personalTodoPath);
             }
             else
             {
-                _todoList = new TodoList();
-                FileManager.SaveTodos(_todoList, _todoPath);
+                AppInfo.Todos = new TodoList();
+                FileManager.SaveTodos(AppInfo.Todos, personalTodoPath);
             }
             while (true)
             {
@@ -173,26 +184,68 @@ namespace TodoListApp
             Console.WriteLine("  update <индекс> <текст>  - обновить текст задачи");
             Console.WriteLine("  exit                     - выйти из программы\n");
         }
-         // --- ДОБАВИЛИ МЕТОД ---
-        private static void EnsureCapacity()
+                // Пункт 5: Стартовое меню авторизации и регистрации пользователей
+        private static bool ShowAuthMenu()
         {
-            if (_todoCount < _todos.Length) return;
-            int newCapacity = _todos.Length * CAPACITY_MULTIPLIER;
-            
-            string[] newTodos = new string[newCapacity];
-            bool[] newStatuses = new bool[newCapacity];
-            DateTime[] newDates = new DateTime[newCapacity];
-
-            for (int i = 0; i < _todos.Length; i++)
+            while (AppInfo.CurrentProfileId == null)
             {
-                newTodos[i] = _todos[i];
-                newStatuses[i] = _statuses[i];
-                newDates[i] = _dates[i];
-            }
+                Console.WriteLine("=== СИСТЕМА АВТОРИЗАЦИИ ===");
+                Console.WriteLine("1. Войти в профиль");
+                Console.WriteLine("2. Зарегистрировать новый профиль");
+                Console.WriteLine("3. Выйти из программы");
+                Console.Write("\nВыберите действие (1-3): ");
+                
+                string? choice = Console.ReadLine();
+                if (choice == "1")
+                {
+                    Console.Write("Введите логин: ");
+                    string? login = Console.ReadLine()?.Trim().ToLower();
+                    Console.Write("Введите пароль: ");
+                    string? password = Console.ReadLine();
 
-            _todos = newTodos;
-            _statuses = newStatuses;
-            _dates = newDates;
+                    var profile = AppInfo.AllProfiles.Find(p => p.Login == login && p.Password == password);
+                    if (profile != null)
+                    {
+                        AppInfo.CurrentProfileId = profile.Id;
+                        Console.WriteLine($"\nУспешный вход! Добро пожаловать, {profile.FirstName}!\n");
+                        return true;
+                    }
+                    Console.WriteLine("\nОшибка: неверный логин или пароль.\n");
+                }
+                else if (choice == "2")
+                {
+                    Console.Write("Введите имя: ");
+                    string firstName = Console.ReadLine()?.Trim() ?? "Имя";
+                    Console.Write("Введите фамилию: ");
+                    string lastName = Console.ReadLine()?.Trim() ?? "Фамилия";
+                    Console.Write("Введите год рождения: ");
+                    int.TryParse(Console.ReadLine(), out int year);
+                    Console.Write("Придумайте логин: ");
+                    string login = Console.ReadLine()?.Trim().ToLower() ?? "user";
+                    Console.Write("Придумайте пароль: ");
+                    string password = Console.ReadLine() ?? "123";
+
+                    if (AppInfo.AllProfiles.Exists(p => p.Login == login))
+                    {
+                        Console.WriteLine("\nОшибка: пользователь с таким логином уже существует.\n");
+                        continue;
+                    }
+
+                    var newProfile = new Profile(Guid.NewGuid(), login, password, firstName, lastName, year == 0 ? 2004 : year);
+                    AppInfo.AllProfiles.Add(newProfile);
+                    FileManager.SaveAllProfiles(AppInfo.AllProfiles, _profilePath);
+                    Console.WriteLine("\nПрофиль успешно создан! Теперь вы можете войти.\n");
+                }
+                else if (choice == "3")
+                {
+                    return false;
+                }
+                else
+                {
+                    Console.WriteLine("\nНекорректный выбор. Попробуйте снова.\n");
+                }
+            }
+            return true;
         }
 
                 // --- Добавлен многострочный режим ввода для команды add с флагами ---
@@ -232,16 +285,7 @@ namespace TodoListApp
                 Console.WriteLine("Ошибка: текст задачи не может быть пустым.\n");
                 return;
             }
-
-            EnsureCapacity();
-
-            _todos[_todoCount] = taskText;
-            _statuses[_todoCount] = false;
-            _dates[_todoCount] = DateTime.Now;
-            _todoCount++;
-            Console.WriteLine("Задача успешно добавлена!\n");
         }
-        
         // --- В КЛАСС ДОБАВИЛИ НОВЫЕ МЕТОДЫ ---
         private static void ExecuteDoneCommand(string input)
         {
