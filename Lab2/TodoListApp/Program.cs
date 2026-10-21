@@ -20,7 +20,7 @@ namespace TodoListApp
          // Пункт 6: Формирование безопасных путей к файлам с помощью Path.Combine
         private static readonly string _dataDir = "data";
         private static readonly string _todoPath = Path.Combine("data", "todo.csv");
-        private static readonly string _profilePath = Path.Combine("data", "profile.txt");
+        private static readonly string _profilePath = Path.Combine("data", "profile.csv");
         static void Main(string[] args)
         {
             Console.InputEncoding = System.Text.Encoding.UTF8;
