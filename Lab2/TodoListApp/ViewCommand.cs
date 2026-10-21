@@ -22,5 +22,10 @@ namespace TodoListApp
             // Передаем флаги в метод View нашего менеджера TodoList
             _todoList.View(showIndex, showStatus, showDate, _input);
         }
+         // Пункт 5: Неотменяемая команда просмотра — метод оката оставляем пустым
+        public void Unexecute()
+        {
+        }
+
     }
 }
