@@ -1,6 +1,6 @@
 using System;
 using System.IO;
-
+using System.Collections.Generic;
 namespace TodoListApp
 {
     // Пункт 2: Статический класс для работы с файловой системой
@@ -14,28 +14,36 @@ namespace TodoListApp
                 Directory.CreateDirectory(dirPath);
             }
         }
-    // Сохранение профиля в текстовый файл (Пункт 2, дефис 2)
-        public static void SaveProfile(Profile profile, string filePath)
+            // Пункт 3: Сохранение списка всех профилей в profile.csv
+        public static void SaveAllProfiles(List<Profile> profiles, string filePath)
         {
-            string content = $"{profile.FirstName};{profile.LastName};{profile.BirthYear}";
-            File.WriteAllText(filePath, content);
+            using (StreamWriter sw = new StreamWriter(filePath, false, System.Text.Encoding.UTF8))
+            {
+                foreach (var p in profiles)
+                {
+                    sw.WriteLine($"{p.Id};{p.Login};{p.Password};{p.FirstName};{p.LastName};{p.BirthYear}");
+                }
+            }
+        }
+        // Пункт 3: Загрузка списка всех профилей из profile.csv
+        public static List<Profile> LoadAllProfiles(string filePath)
+        {
+            List<Profile> list = new List<Profile>();
+            if (!File.Exists(filePath)) return list;
+
+            string[] lines = File.ReadAllLines(filePath);
+            foreach (string line in lines)
+            {
+                if (string.IsNullOrWhiteSpace(line)) continue;
+                string[] parts = line.Split(';');
+                if (parts.Length == 6 && Guid.TryParse(parts[0], out Guid id) && int.TryParse(parts[5], out int year))
+                {
+                    list.Add(new Profile(id, parts[1], parts[2], parts[3], parts[4], year));
+                }
+            }
+            return list;
         }
 
-        // Загрузка профиля из файла (Пункт 2, дефис 3)
-        public static Profile LoadProfile(string filePath)
-        {
-            if (!File.Exists(filePath))
-            {
-                return new Profile("Анатолий", "Васильев", 2004);
-            }
-
-            string[] parts = File.ReadAllText(filePath).Split(';');
-            if (parts.Length == 3 && int.TryParse(parts[2], out int year))
-            {
-                return new Profile(parts[0], parts[1], year);
-            }
-            return new Profile("Анатолий", "Васильев", 2004);
-        }
         // Пункт 3: Сохранение задач в CSV-формат (Пункт 2, дефис 4)
         public static void SaveTodos(TodoList todos, string filePath)
         {
