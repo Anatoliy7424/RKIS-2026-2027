@@ -66,8 +66,48 @@ namespace TodoListApp
                                 // --- Пункт 5: Единая точка обработки ООП-команд через паттерн Команда ---
                             else if (lowerInput == "profile" || input.StartsWith("add ", StringComparison.OrdinalIgnoreCase) || lowerInput.StartsWith("view") || input.StartsWith("status ", StringComparison.OrdinalIgnoreCase))
                 {
-                    ICommand command = CommandParser.Parse(input, _todoList, _userProfile);
-                    command.Execute();
+                     ICommand command = CommandParser.Parse(input, _todoList, _userProfile);
+
+                    // Если ввели команду отмены (Undo)
+                    if (command is UndoCommand)
+                    {
+                        if (AppInfo.UndoStack.Count > 0)
+                        {
+                            ICommand undoCmd = AppInfo.UndoStack.Pop();
+                            undoCmd.Unexecute();
+                            AppInfo.RedoStack.Push(undoCmd); // Запоминаем для возможного Redo
+                        }
+                        else
+                        {
+                            Console.WriteLine("История действий пуста. Нечего отменять.\n");
+                        }
+                    }
+                    // Если ввели команду повтора (Redo)
+                    else if (command is RedoCommand)
+                    {
+                        if (AppInfo.RedoStack.Count > 0)
+                        {
+                            ICommand redoCmd = AppInfo.RedoStack.Pop();
+                            redoCmd.Execute();
+                            AppInfo.UndoStack.Push(redoCmd); // Возвращаем в стек отмены
+                        }
+                        else
+                        {
+                            Console.WriteLine("Нет отменённых действий для повтора.\n");
+                        }
+                    }
+                    // Обычная команда (add, status, profile, view)
+                    else
+                    {
+                        command.Execute();
+                        
+                        // Если команда отменяемая (add или status) — сохраняем её в стек истории
+                        if (command is AddCommand || command is StatusCommand)
+                        {
+                            AppInfo.UndoStack.Push(command);
+                            AppInfo.RedoStack.Clear(); // Новое действие очищает стек повтора
+                        }
+                    }
                 }
                 else if (input.StartsWith("delete ", StringComparison.OrdinalIgnoreCase))
                 {
