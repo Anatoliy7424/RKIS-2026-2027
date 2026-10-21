@@ -6,11 +6,13 @@ namespace TodoListApp
     public class ProfileCommand : ICommand
     {
         private readonly Profile _profile;
+        private readonly string _input;
+            public ProfileCommand(Profile profile, string input)
+    {
+        _profile = profile;
+        _input = input;
+    }
 
-        public ProfileCommand(Profile profile)
-        {
-            _profile = profile;
-        }
 
         public void Execute()
         {

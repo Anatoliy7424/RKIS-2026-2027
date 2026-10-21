@@ -5,38 +5,32 @@ namespace TodoListApp
     // Пункт 4: Статический класс для разбора строк ввода
     public static class CommandParser
     {
-        // Метод принимает строку, список задач и профиль (Пункт 4, дефис 1)
+        // Часть 1, Пункт 1: Словарь делегатов-обработчиков команд
+        private static readonly Dictionary<string, Func<string, TodoList, Profile, ICommand>> _commandHandlers = new();
+
+        // Часть 1, Пункт 2: Статический конструктор для регистрации команд
+        static CommandParser()
+        {
+            _commandHandlers["profile"] = (args, list, prof) => new ProfileCommand(prof, string.IsNullOrWhiteSpace(args) ? "profile" : "profile " + args);
+            _commandHandlers["add"] = (args, list, prof) => new AddCommand(list, "add " + args);
+            _commandHandlers["view"] = (args, list, prof) => new ViewCommand(list, string.IsNullOrWhiteSpace(args) ? "view" : "view " + args);
+            _commandHandlers["status"] = (args, list, prof) => new StatusCommand(list, "status " + args);
+            _commandHandlers["undo"] = (args, list, prof) => new UndoCommand();
+            _commandHandlers["redo"] = (args, list, prof) => new RedoCommand();
+        }
+
+        // Часть 1, Пункт 3: Метод Parse на основе словаря делегатов
         public static ICommand Parse(string inputString, TodoList todoList, Profile profile)
         {
-            string lowerInput = inputString.ToLower();
-                        // Пункт 2: Распознавание системных команд отмены и повтора действия
-            if (lowerInput == "undo")
+            var parts = inputString.Split(new[] { ' ' }, 2);
+            var cmdName = parts[0].ToLower();
+            var args = parts.Length > 1 ? parts[1] : "";
+
+            if (_commandHandlers.TryGetValue(cmdName, out var handler))
             {
-                return new UndoCommand();
-            }
-            if (lowerInput == "redo")
-            {
-                return new RedoCommand();
-            }
-            // Проверяем, какая команда была введена (Пункт 4, дефис 2)
-            if (lowerInput == "profile")
-            {
-                return new ProfileCommand(profile);
-            }
-            if (inputString.StartsWith("add ", StringComparison.OrdinalIgnoreCase))
-            {
-                return new AddCommand(todoList, inputString);
-            }
-                        if (lowerInput == "view" || inputString.StartsWith("view ", StringComparison.OrdinalIgnoreCase))
-            {
-                return new ViewCommand(todoList, inputString);
-            }
-                        if (inputString.StartsWith("status ", StringComparison.OrdinalIgnoreCase))
-            {
-                return new StatusCommand(todoList, inputString);
+                return handler(args, todoList, profile);
             }
 
-            // Если команда неизвестна программе, возвращаем специальную заглушку
             return new UnknownCommand(inputString);
         }
     }
