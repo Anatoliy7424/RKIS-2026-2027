@@ -65,7 +65,7 @@ namespace TodoListApp
                 {
                     item.SetStatus(_oldStatus);
                     // Сохраняем изменения на диск в CSV (Пункт 6)
-                    FileManager.SaveTodos(_todoList, System.IO.Path.Combine("data", "todo.csv"));
+                    FileManager.SaveTodos(_todoList, System.IO.Path.Combine("data", $"todos_{AppInfo.CurrentProfileId}.csv"));
                     Console.WriteLine($"Действие 'status' успешно отменено. Возвращен статус: {_oldStatus}\n");
                 }
             }
