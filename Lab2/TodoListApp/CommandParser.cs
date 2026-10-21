@@ -9,7 +9,15 @@ namespace TodoListApp
         public static ICommand Parse(string inputString, TodoList todoList, Profile profile)
         {
             string lowerInput = inputString.ToLower();
-
+                        // Пункт 2: Распознавание системных команд отмены и повтора действия
+            if (lowerInput == "undo")
+            {
+                return new UndoCommand();
+            }
+            if (lowerInput == "redo")
+            {
+                return new RedoCommand();
+            }
             // Проверяем, какая команда была введена (Пункт 4, дефис 2)
             if (lowerInput == "profile")
             {
@@ -45,5 +53,24 @@ namespace TodoListApp
                 Console.WriteLine("Неизвестная команда. Введите 'help'.\n");
             }
         }
+        // Пункт 5: Неотменяемая команда — метод отката оставляем пустым
+        public void Unexecute()
+        {
+        }
+
     }
+    // Класс-заглушка для команды отмены (Undo) по паттерну Команда
+    public class UndoCommand : ICommand
+    {
+        public void Execute() { }
+        public void Unexecute() { }
+    }
+
+    // Класс-заглушка для команды повтора (Redo) по паттерну Команда
+    public class RedoCommand : ICommand
+    {
+        public void Execute() { }
+        public void Unexecute() { }
+    }
+
 }
