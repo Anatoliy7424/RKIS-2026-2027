@@ -56,7 +56,10 @@ namespace TodoListApp
                     AppInfo.Todos = new TodoList();
                     FileManager.SaveTodos(AppInfo.Todos, personalTodoPath);
                 }
-                            // Внутренний цикл выполнения команд для ТЕКУЩЕГО вошедшего пользователя
+                AppInfo.Todos.OnTodoAdded += (item) => FileManager.SaveTodos(AppInfo.Todos, personalTodoPath);
+                AppInfo.Todos.OnTodoDeleted += (item) => FileManager.SaveTodos(AppInfo.Todos, personalTodoPath);
+                AppInfo.Todos.OnTodoUpdated += (item) => FileManager.SaveTodos(AppInfo.Todos, personalTodoPath);
+                AppInfo.Todos.OnStatusChanged += (item) => FileManager.SaveTodos(AppInfo.Todos, personalTodoPath);
                 while (AppInfo.CurrentProfileId != null)
                 {
                     Console.Write("Введите команду: ");
