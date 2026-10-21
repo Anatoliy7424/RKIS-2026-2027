@@ -33,7 +33,32 @@ namespace TodoListApp
 
             // Пункт 3: Автоматическая загрузка списка всех профилей из profile.csv при старте
             AppInfo.AllProfiles = FileManager.LoadAllProfiles(_profilePath);
-            // Пункт 5: Запуск стартового меню входа/регистрации
+             // Внешний бесконечный цикл работы приложения (для поддержки смены профилей)
+            while (true)
+            {
+                // Пункт 5: Запуск стартового меню входа/регистрации
+                if (!ShowAuthMenu())
+                {
+                    Console.WriteLine("Выход из приложения.");
+                    break;
+                }
+
+                // Пункт 6: Формирование пути к персональному файлу задач на основе ID вошедшего пользователя
+                string personalTodoPath = Path.Combine("data", $"todos_{AppInfo.CurrentProfileId}.csv");
+
+                // Загружаем персональные задачи
+                if (File.Exists(personalTodoPath))
+                {
+                    AppInfo.Todos = FileManager.LoadTodos(personalTodoPath);
+                }
+                else
+                {
+                    AppInfo.Todos = new TodoList();
+                    FileManager.SaveTodos(AppInfo.Todos, personalTodoPath);
+                }
+            while (true)
+            {
+                // Пункт 5: Запуск стартового меню входа/регистрации
             if (!ShowAuthMenu())
             {
                 Console.WriteLine("Выход из приложения.");
@@ -133,6 +158,7 @@ namespace TodoListApp
                     Console.WriteLine("Неизвестная команда. Введите 'help'.\n");
                 }
             }
+        }
         }
                 // Метод view принимает строку с флагами и выводит таблицу
         private static void ExecuteViewCommand(string input)
