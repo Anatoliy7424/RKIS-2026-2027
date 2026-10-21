@@ -48,7 +48,7 @@ namespace TodoListApp
             _addedItem = new TodoItem(taskText);
             _todoList.Add(_addedItem);
             // Пункт 4: Автоматическое сохранение изменений в файл
-            FileManager.SaveTodos(_todoList, Path.Combine("data", "todo.csv"));
+            FileManager.SaveTodos(_todoList, Path.Combine("data", $"todos_{AppInfo.CurrentProfileId}.csv"));
             Console.WriteLine("Задача успешно добавлена!\n");
         }
     // Пункт 4: Реализация отмены для отменяемой команды AddCommand
@@ -73,7 +73,7 @@ namespace TodoListApp
                     _todoList.Delete(index);
                     
                     // Перезаписываем CSV-файл, чтобы изменения сохранились на диске
-                    FileManager.SaveTodos(_todoList, Path.Combine("data", "todo.csv"));
+                    FileManager.SaveTodos(_todoList, Path.Combine("data", $"todos_{AppInfo.CurrentProfileId}.csv"));
                     Console.WriteLine("Действие 'add' успешно отменено.");
                 }
             }
