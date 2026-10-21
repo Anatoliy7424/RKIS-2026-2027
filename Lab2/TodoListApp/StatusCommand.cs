@@ -7,7 +7,10 @@ namespace TodoListApp
     {
         private readonly TodoList _todoList;
         private readonly string _input;
-
+         // Поля для запоминания состояния до изменения (Пункт 6)
+        private int _targetIndex = -1;
+        private TodoStatus _oldStatus;
+        private bool _isExecutedSuccessfully = false;
         public StatusCommand(TodoList todoList, string input)
         {
             _todoList = todoList;
@@ -29,13 +32,18 @@ namespace TodoListApp
                     TodoItem? item = _todoList[index]; // Наш новый индексатор в деле!
                     if (item != null)
                     {
+                        // Пункт 6: Запоминаем старый статус перед изменением
+                        _targetIndex = index;
+                        _oldStatus = item.Status;
+                        _isExecutedSuccessfully = true;
+
                         item.SetStatus(newStatus);
                         Console.WriteLine($"Статус задачи [{index}] успешно изменен на: {newStatus}\n");
                     }
                     else
                     {
                         Console.WriteLine("Ошибка: задача с таким индексом не найдена.\n");
-                    }
+                    }         
                 }
                 else
                 {
@@ -47,5 +55,21 @@ namespace TodoListApp
                 Console.WriteLine("Ошибка: используйте формат 'status <индекс> <статус>'.\n");
             }
         }
+                // Пункт 6: Метод для отмены смены статуса задачи
+        public void Unexecute()
+        {
+            if (_isExecutedSuccessfully && _targetIndex >= 0)
+            {
+                TodoItem? item = _todoList[_targetIndex];
+                if (item != null)
+                {
+                    item.SetStatus(_oldStatus);
+                    // Сохраняем изменения на диск в CSV (Пункт 6)
+                    FileManager.SaveTodos(_todoList, System.IO.Path.Combine("data", "todo.csv"));
+                    Console.WriteLine($"Действие 'status' успешно отменено. Возвращен статус: {_oldStatus}\n");
+                }
+            }
+        }
+
     }
 }
