@@ -52,4 +52,31 @@ namespace TodoListApp
             Console.WriteLine("Задача успешно добавлена!\n");
         }
     }
+    // Пункт 4: Реализация отмены для отменяемой команды AddCommand
+        public void Unexecute()
+        {
+            if (_addedItem != null)
+            {
+                // Ищем индекс нашей запомненной задачи в списке
+                int index = -1;
+                for (int i = 0; i < _todoList.Count; i++)
+                {
+                    if (_todoList[i] == _addedItem)
+                    {
+                        index = i;
+                        break;
+                    }
+                }
+
+                // Если задача найдена — удаляем её через встроенный метод
+                if (index != _todoList.Count - 1 && index >= 0)
+                {
+                    _todoList.Delete(index);
+                    
+                    // Перезаписываем CSV-файл, чтобы изменения сохранились на диске
+                    FileManager.SaveTodos(_todoList, Path.Combine("data", "todo.csv"));
+                    Console.WriteLine("Действие 'add' успешно отменено.");
+                }
+            }
+        }
 }
